@@ -6,7 +6,7 @@ inputs:
     required: true
     default: 'main.yml'
   github-token:
-    description: 'Your github token, ${{ secrets.GITHUB_TOKEN }}'
+    description: 'Your github token, \${{ secrets.GITHUB_TOKEN }}'
     required: true
 
 runs:
@@ -29,7 +29,7 @@ runs:
       uses: actions/github-script@v6
       if: github.event.pull_request.merged != true
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        github-token: ${{ inputs.github-token }}
         script: |
           const output = `#### MACH composer plan 📖
 
