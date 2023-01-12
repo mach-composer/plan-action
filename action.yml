@@ -1,10 +1,14 @@
-name: 'Hello World'
-description: 'Greet someone'
+name: 'Mach Composer Plan'
+description: 'Run mach-composer plan and update PR'
 inputs:
   filename:
     description: 'name of the mach-composer config file'
     required: true
     default: 'main.yml'
+  github-token:
+    description: 'Your github token, ${{ secrets.GITHUB_TOKEN }}'
+    required: true
+
 runs:
   using: "composite"
   steps:
