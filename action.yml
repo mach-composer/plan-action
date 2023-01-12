@@ -6,7 +6,7 @@ inputs:
     required: true
     default: 'main.yml'
   github-token:
-    description: 'Your github token, \${{ secrets.GITHUB_TOKEN }}'
+    description: 'Your github token'
     required: true
 
 runs:
