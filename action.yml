@@ -1,0 +1,47 @@
+name: 'Hello World'
+description: 'Greet someone'
+inputs:
+  filename:
+    description: 'name of the mach-composer config file'
+    required: true
+    default: 'main.yml'
+runs:
+  using: "composite"
+  steps:
+    - name: Run MACH Composer plan
+      shell: bash
+      run: mach-composer plan -f ${{ inputs.filename }}
+      id: plan
+
+    - name: Show MACH Composer plan
+      shell: bash
+      run: |
+        echo 'PLAN_OUTPUT<<EOF' >> $GITHUB_ENV
+        mach-composer show-plan -f ${{ inputs.filename }} --no-color | grep -v "^::debug::" >> $GITHUB_ENV
+        echo 'EOF' >> $GITHUB_ENV
+      id: show-plan
+
+    - name: Update Pull Request
+      uses: actions/github-script@v6
+      if: github.event.pull_request.merged != true
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `#### MACH composer plan 📖
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`\n
+          ${{ env.PLAN_OUTPUT }}
+          \`\`\`
+
+          </details>
+
+          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
