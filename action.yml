@@ -1,6 +1,7 @@
 name: 'Mach Composer Plan'
 description: 'Run mach-composer plan and update PR'
 inputs:
+  # required
   filename:
     description: 'name of the mach-composer config file'
     required: true
@@ -8,20 +9,25 @@ inputs:
   github-token:
     description: 'Your github token'
     required: true
+  # optional
+  site:
+    description: 'Site to parse'
+    required: false
+    default: ''
 
 runs:
   using: "composite"
   steps:
     - name: Run MACH Composer plan
       shell: bash
-      run: mach-composer plan -f ${{ inputs.filename }}
+      run: mach-composer plan -f ${{ inputs.filename }} -s ${{ inputs.site }}
       id: plan
 
     - name: Show MACH Composer plan
       shell: bash
       run: |
         echo 'PLAN_OUTPUT<<EOF' >> $GITHUB_ENV
-        mach-composer show-plan -f ${{ inputs.filename }} --no-color | grep -v "^::debug::" >> $GITHUB_ENV
+        mach-composer show-plan -f ${{ inputs.filename }} -s ${{ inputs.site }} --no-color | grep -v "^::debug::" >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
       id: show-plan
 
