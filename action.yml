@@ -20,9 +20,7 @@ runs:
     - name: Show MACH Composer plan
       shell: bash
       run: |
-        echo 'PLAN_OUTPUT<<EOF' >> $GITHUB_ENV
-        mach-composer show-plan -f ${{ inputs.filename }} --no-color | grep -v "^::debug::" >> $GITHUB_ENV
-        echo 'EOF' >> $GITHUB_ENV
+        mach-composer show-plan -f ${{ inputs.filename }} --no-color | grep -v "^::debug::" >${GITHUB_WORKSPACE}/plan.out
       id: show-plan
 
     - name: Update Pull Request
@@ -31,7 +29,8 @@ runs:
       with:
         github-token: ${{ inputs.github-token }}
         script: |
-          const plan = process.env.PLAN_OUTPUT;
+          const fs = require('fs')
+          const plan = fs.readFileSync('plan.out', 'utf8')
           const planOutput = plan.length > 65000 ? plan.substring(0, 65000) : plan
           const truncatedMessage = plan.length > 65000 ? "Output is too long and has been truncated";
           const output = `#### MACH composer plan 📖
