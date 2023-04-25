@@ -31,15 +31,19 @@ runs:
       with:
         github-token: ${{ inputs.github-token }}
         script: |
+          const plan = process.env.PLAN_OUTPUT;
+          const planOutput = plan.length > 65000 ? plan.substring(0, 65000) : plan
+          const truncatedMessage = plan.length > 65000 ? "Output is too long and has been truncated";
           const output = `#### MACH composer plan 📖
 
           <details><summary>Show Plan</summary>
 
           \`\`\`\n
-          ${{ env.PLAN_OUTPUT }}
+          ${planOutput}
           \`\`\`
 
           </details>
+          ${truncatedMessage}
 
           *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
