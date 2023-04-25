@@ -29,10 +29,10 @@ runs:
       with:
         github-token: ${{ inputs.github-token }}
         script: |
-          const fs = require('fs')
-          const plan = fs.readFileSync('plan.out', 'utf8')
-          const planOutput = plan.length > 65000 ? plan.substring(0, 65000) : plan
-          const truncatedMessage = plan.length > 65000 ? "Output is too long and has been truncated";
+          const fs = require('fs');
+          const plan = fs.readFileSync('plan.out', 'utf8');
+          const planOutput = plan.length > 65000 ? plan.substring(0, 65000) : plan;
+          const truncatedMessage = plan.length > 65000 ? "Output is too long and has been truncated" : "";
           const output = `#### MACH composer plan 📖
 
           <details><summary>Show Plan</summary>
