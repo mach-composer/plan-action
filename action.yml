@@ -37,7 +37,7 @@ runs:
 
           <details><summary>Show Plan</summary>
 
-          \`\`\`\n
+          \`\`\`hcl\n
           ${planOutput}
           \`\`\`
 
