@@ -18,6 +18,7 @@ runs:
   steps:
     - name: Run MACH Composer plan
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
       run: mach-composer plan -f ${{ inputs.filename }}
       id: plan
 
