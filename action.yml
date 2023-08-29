@@ -8,6 +8,10 @@ inputs:
   github-token:
     description: 'Your github token'
     required: true
+  working-directory:
+    description: 'The working directory to run mach-composer in'
+    required: false
+    default: '.'
 
 runs:
   using: "composite"
@@ -19,6 +23,7 @@ runs:
 
     - name: Show MACH Composer plan
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
       run: |
         mach-composer show-plan -f ${{ inputs.filename }} --no-color | grep -v "^::debug::" >${GITHUB_WORKSPACE}/plan.out
       id: show-plan
