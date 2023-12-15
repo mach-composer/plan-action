@@ -12,6 +12,10 @@ inputs:
     description: 'The working directory to run mach-composer in'
     required: false
     default: '.'
+  plan-args:
+    description: 'Additional arguments to pass to mach-composer plan'
+    required: false
+    default: ''
 
 runs:
   using: "composite"
@@ -19,7 +23,7 @@ runs:
     - name: Run MACH Composer plan
       shell: bash
       working-directory: ${{ inputs.working-directory }}
-      run: mach-composer plan -f ${{ inputs.filename }}
+      run: mach-composer plan -f ${{ inputs.filename }} ${{ inputs.plan-args }}
       id: plan
 
     - name: Show MACH Composer plan
