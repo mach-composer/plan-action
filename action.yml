@@ -16,6 +16,10 @@ inputs:
     description: 'Additional arguments to pass to mach-composer plan'
     required: false
     default: ''
+  show-plan-args:
+    description: 'Additional arguments to pass to mach-composer show-plan'
+    required: false
+    default: ''
 
 runs:
   using: "composite"
@@ -30,11 +34,11 @@ runs:
       shell: bash
       working-directory: ${{ inputs.working-directory }}
       run: |
-        mach-composer show-plan -f ${{ inputs.filename }} --no-color | grep -v "^::debug::" >${GITHUB_WORKSPACE}/plan.out
+        mach-composer show-plan -f ${{ inputs.filename }} ${{ inputs.show-plan-args }} --no-color | grep -v "^::debug::" >${GITHUB_WORKSPACE}/plan.out
       id: show-plan
 
     - name: Update Pull Request
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       if: github.event.pull_request.merged != true
       with:
         github-token: ${{ inputs.github-token }}
